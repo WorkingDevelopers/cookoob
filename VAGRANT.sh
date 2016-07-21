@@ -19,7 +19,7 @@ function checkout_submodule() {
 function setup_vagrant() {
     . "${SCRIPT_DIR}/tools/vagrant/linux/functions.sh"
 
-    ${DIFF_TOOL} -Nr --exclude='*id_rsa*' "${SCRIPT_DIR}/${VAGRANT_FILE_PATH}/puphpet/" "${SETUP_DIR}/puphpet/"
+    ${DIFF_TOOL} -Nr --exclude='*id_rsa*' "${SETUP_DIR}/puphpet/" "${SCRIPT_DIR}/${VAGRANT_FILE_PATH}/puphpet/"
     NEW=$?
 
     if [[ ${NEW} -gt 0 ]]; then
