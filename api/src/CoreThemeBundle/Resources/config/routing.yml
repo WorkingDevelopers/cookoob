@@ -1,0 +1,3 @@
+core_theme_homepage:
+    path:     /
+    defaults: { _controller: CoreThemeBundle:Default:index }
