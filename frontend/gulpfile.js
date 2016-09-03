@@ -18,6 +18,13 @@ var gulp = require('gulp'),
 var config = require('./gulp.config')();
 var tsProject = tsc.createProject('tsconfig.json');
 
+var paths = {
+    scripts: ['src/app/**/*', '!client/external/**/*.coffee'],
+    html: ['src/**/*.html'],
+    images: 'client/img/**/*',
+    styles: 'src/styles/**/*'
+};
+
 gulp.task('default', ['build'], function () {
 
 });
@@ -25,24 +32,31 @@ gulp.task('default', ['build'], function () {
 /**
  * Build the project.
  */
-gulp.task("build", ['compile-ts', 'styles', 'resources', 'libs'], function () {
-    console.log("Building the project ...")
+gulp.task('build', ['build-scripts', 'build-styles', 'build-resources', 'libs', 'inject'], function () {
+    console.log('Building the project ...')
 });
 
-gulp.task("watch", ['build'], function () {
-    gulp.watch('./src/**/*.ts', './src/**/*.css', './src/**/*.html', './src/**/*.js', ['build'])
+gulp.task('watch', function () {
+    gulp.watch(paths.scripts, ['build-scripts']);
+    gulp.watch(paths.images, ['build-resources']);
+    gulp.watch(paths.styles, ['build-styles']);
+});
+
+gulp.task('build-scripts', ['compile-ts'], function (done) {
+    return gulp.src(['src/**/*.js', '!**/*.ts'])
+        .pipe(gulp.dest('build'))
 });
 
 gulp.task('compile-ts', function (done) {
-    var tsResult = gulp.src("src/**/*.ts")
+    var tsResult = gulp.src('src/**/*.ts')
         .pipe(sourcemaps.init())
         .pipe(tsc(tsProject));
     return tsResult.js
-        .pipe(sourcemaps.write("."))
-        .pipe(gulp.dest("build"));
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('build'));
 });
 
-gulp.task('styles', function () {
+gulp.task('build-styles', function () {
     return sass('src/styles/main.scss', {style: 'expanded'})
         .pipe(autoprefixer('last 2 version'))
         .pipe(gulp.dest('dist/assets/css'))
@@ -55,7 +69,7 @@ gulp.task('styles', function () {
 /**
  * Copy all resources that are not TypeScript files into build directory.
  */
-gulp.task('resources', function () {
+gulp.task('build-resources', function () {
     return gulp.src(['src/**/*', '!**/*.ts'])
         .pipe(gulp.dest('build'))
 });
@@ -81,7 +95,7 @@ gulp.task('inject', function () {
 });
 
 gulp.task('clean', function () {
-    return del(['build', 'dist/css', 'dist/js', 'dist/img']);
+    return del(['build']);
 });
 
 function browserSyncInit(baseDir, files) {
@@ -98,17 +112,16 @@ function browserSyncInit(baseDir, files) {
 // starts a development server
 // runs preprocessor tasks before,
 // and serves the src and .tmp folders
-gulp.task('serve', ['compile-ts', 'styles', 'resources', 'libs', 'inject'],
-    function () {
-        browserSync.init([
-            paths.tmp,
-            paths.src
-        ], [
-            paths.tmp + '/**/*.css',
-            paths.tmp + '/**/*.js',
-            paths.tmp + '/**/*.html'
-        ]);
-    });
+gulp.task('serve', ['build'], function () {
+    browserSync.init([
+        paths.tmp,
+        paths.src
+    ], [
+        paths.tmp + '/**/*.css',
+        paths.tmp + '/**/*.js',
+        paths.tmp + '/**/*.html'
+    ]);
+});
 
 // starts a production server
 // runs the build task before,
