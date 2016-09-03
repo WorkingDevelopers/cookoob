@@ -15,14 +15,27 @@ var gulp = require('gulp'),
     del = require('del'),
     browserSync = require('browser-sync').create();
 
-var config = require('./gulp.config')();
 var tsProject = tsc.createProject('tsconfig.json');
 
 var paths = {
     scripts: ['src/app/**/*', '!client/external/**/*.coffee'],
+    scripts_js: ['src/app/**/*.js', '!client/external/**/*.ts'],
     html: ['src/**/*.html'],
-    images: 'client/img/**/*',
-    styles: 'src/styles/**/*'
+    images: 'src/img/**/*',
+    styles: 'src/styles/**/*',
+    styles_css: 'src/styles/**/*.css',
+    styles_sass: 'src/styles/**/*.scss',
+    assets: ['src/resources/*.png', 'src/**/*.html'],
+    libs: [
+        // 'es6-shim/es6-shim.min.js',
+        'systemjs/dist/system-polyfills.js',
+        'systemjs/dist/system.src.js',
+        'reflect-metadata/Reflect.js',
+        'core-js/client/**',
+        'rxjs/**',
+        'zone.js/dist/**',
+        '@angular/**'
+    ]
 };
 
 gulp.task('default', ['build'], function () {
@@ -32,23 +45,26 @@ gulp.task('default', ['build'], function () {
 /**
  * Build the project.
  */
-gulp.task('build', ['build-scripts', 'build-styles', 'build-resources', 'libs', 'inject'], function () {
+gulp.task('build', ['build-scripts', 'build-styles', 'copy:resources', 'libs', 'inject'], function () {
     console.log('Building the project ...')
 });
 
 gulp.task('watch', function () {
     gulp.watch(paths.scripts, ['build-scripts']);
-    gulp.watch(paths.images, ['build-resources']);
+    gulp.watch(paths.images, ['copy:resources']);
     gulp.watch(paths.styles, ['build-styles']);
+    gulp.watch(paths.assets, ['copy:resources']);
+    gulp.watch(['./gulpfile.js', './*.json'], ['build']);
 });
 
 gulp.task('build-scripts', ['compile-ts'], function (done) {
-    return gulp.src(['src/**/*.js', '!**/*.ts'])
+    return gulp.src(paths.scripts_js)
         .pipe(gulp.dest('build'))
 });
 
 gulp.task('compile-ts', function (done) {
-    var tsResult = gulp.src('src/**/*.ts')
+    var tsResult = gulp
+        .src(paths.scripts)
         .pipe(sourcemaps.init())
         .pipe(tsc(tsProject));
     return tsResult.js
@@ -57,20 +73,20 @@ gulp.task('compile-ts', function (done) {
 });
 
 gulp.task('build-styles', function () {
-    return sass('src/styles/main.scss', {style: 'expanded'})
+    return sass(paths.styles_sass, {style: 'expanded'})
         .pipe(autoprefixer('last 2 version'))
-        .pipe(gulp.dest('dist/assets/css'))
+        .pipe(gulp.dest('build/styles/css'))
         .pipe(rename({suffix: '.min'}))
         .pipe(cssnano())
-        .pipe(gulp.dest('build/assets/css'))
+        // .pipe(gulp.dest('build/assets/css'))
         .pipe(notify({message: 'Styles task complete'}));
 });
 
 /**
  * Copy all resources that are not TypeScript files into build directory.
  */
-gulp.task('build-resources', function () {
-    return gulp.src(['src/**/*', '!**/*.ts'])
+gulp.task('copy:resources', function () {
+    return gulp.src(paths.assets)
         .pipe(gulp.dest('build'))
 });
 
@@ -78,15 +94,7 @@ gulp.task('build-resources', function () {
  * Copy all required libraries into build directory.
  */
 gulp.task('libs', function () {
-    return gulp.src([
-        'es6-shim/es6-shim.min.js',
-        'systemjs/dist/system-polyfills.js',
-        'systemjs/dist/system.src.js',
-        'reflect-metadata/Reflect.js',
-        'rxjs/**',
-        'zone.js/dist/**',
-        '@angular/**'
-    ], {cwd: 'node_modules/**'}) /* Glob required here. */
+    return gulp.src(paths.libs, {cwd: 'node_modules/**'}) /* Glob required here. */
         .pipe(gulp.dest('build/lib'));
 });
 

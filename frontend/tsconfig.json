@@ -2,15 +2,26 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "build/app",
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "target": "es5",
-        "module": "system",
-        "moduleResolution": "node",
-        "noImplicitAny": false,
-        "sourceMap": true
+        "removeComments": false,
+        "noImplicitAny": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "app/**/*.ts",
+        "typings/**/*.d.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "typings/main",
+        "typings/main.d.ts"
     ]
 }
