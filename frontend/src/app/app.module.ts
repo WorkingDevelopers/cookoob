@@ -6,11 +6,11 @@
 
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CookoobAppComponent }  from './app.component';
+import { AppComponent }  from './app.component';
 
 @NgModule({
     imports:      [ BrowserModule ],
-    declarations: [ CookoobAppComponent ],
-    bootstrap:    [ CookoobAppComponent ]
+    declarations: [ AppComponent ],
+    bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

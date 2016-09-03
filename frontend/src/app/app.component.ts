@@ -7,12 +7,19 @@ import {Component} from '@angular/core';
 
 @Component({
     selector: 'my-app',
-    template: '<h1>CooKooB - The CookBook Manager</h1><h2>WorkingDeveloper.net {{name}}</h2>'
+    // template: '<h1>CooKooB - The CookBook Manager</h1><h2>WorkingDeveloper.net {{recipe.name}}</h2>'
+    templateUrl: 'views/app.html'
 })
 
-export class CookoobAppComponent {
-    private name;
-    constructor() {
-        this.name = 'is great'
-    }
+export class AppComponent {
+    title = 'Tour of Heroes';
+    recipe: Recipe = {
+        id: 1,
+        name: "Test"
+    };
+}
+
+export class Recipe {
+    id: number;
+    name: string;
 }

@@ -20,12 +20,13 @@ var tsProject = tsc.createProject('tsconfig.json');
 var paths = {
     scripts: ['src/app/**/*', '!client/external/**/*.coffee'],
     scripts_js: ['src/app/**/*.js', '!client/external/**/*.ts'],
-    html: ['src/**/*.html'],
-    images: 'src/img/**/*',
+    html: ['src/*.html'],
+    views: ['src/views/**/*.html'],
+    images: ['src/img/**/*'],
     styles: 'src/styles/**/*',
     styles_css: 'src/styles/**/*.css',
     styles_sass: 'src/styles/**/*.scss',
-    assets: ['src/resources/*.png', 'src/**/*.html'],
+    assets: ['src/**/*.png', 'src/**/*.jpg', 'src/*.js', 'src/styles/**/*.css'],
     libs: [
         // 'es6-shim/es6-shim.min.js',
         'systemjs/dist/system-polyfills.js',
@@ -38,7 +39,7 @@ var paths = {
     ]
 };
 
-gulp.task('default', ['build'], function () {
+gulp.task('default', ['clean', 'build'], function () {
 
 });
 
@@ -54,7 +55,9 @@ gulp.task('watch', function () {
     gulp.watch(paths.images, ['copy:resources']);
     gulp.watch(paths.styles, ['build-styles']);
     gulp.watch(paths.assets, ['copy:resources']);
-    gulp.watch(['./gulpfile.js', './*.json'], ['build']);
+    gulp.watch(paths.html, ['copy:resources']);
+    gulp.watch(paths.views, ['copy:resources']);
+    // gulp.watch(['./gulpfile.js', './*.json'], ['build']);
 });
 
 gulp.task('build-scripts', ['compile-ts'], function (done) {
@@ -86,8 +89,14 @@ gulp.task('build-styles', function () {
  * Copy all resources that are not TypeScript files into build directory.
  */
 gulp.task('copy:resources', function () {
-    return gulp.src(paths.assets)
-        .pipe(gulp.dest('build'))
+    gulp.src(paths.images)
+        .pipe(gulp.dest('build'));
+    gulp.src(paths.assets)
+        .pipe(gulp.dest('build'));
+    gulp.src(paths.html)
+        .pipe(gulp.dest('build'));
+    gulp.src(paths.views)
+        .pipe(gulp.dest('build/views'));
 });
 
 /**
