@@ -2,10 +2,16 @@
 <head>
   <title>Angular 2 QuickStart</title>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="styles/connoisseur/style.css" rel="stylesheet" type="text/css" media="screen"/>
+  <link href="styles/connoisseur/base.css" rel="stylesheet" type="text/css" media="screen"/>
   <link rel="stylesheet" href="styles/styles.css">
   <!-- 1. Load libraries -->
   <!-- Polyfill(s) for older browsers -->
+  <!-- https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js -->
+  <script type="text/javascript" src="scripts/jquery-1.11.0.js"></script>
+  <script type="text/javascript" src="scripts/jquery.pikachoose.js"></script>
   <script src="lib/core-js/client/shim.min.js"></script>
   <script src="lib/zone.js/dist/zone.js"></script>
   <script src="lib/reflect-metadata/Reflect.js"></script>
@@ -15,6 +21,11 @@
   <script>
     System.import('app').catch(function (err) {
       console.error(err);
+    });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#pikame").PikaChoose();
     });
   </script>
 </head>

@@ -77,7 +77,7 @@
 }
 
 .pika-imgnav a.previous {
-    background: url(../images/prev.png) no-repeat left 45%;
+    background: url(../../../images/connoisseur/connoisseur/prev.png) no-repeat left 45%;
     height: 100%;
     width: 50px;
     top: 10px;
@@ -86,7 +86,7 @@
 }
 
 .pika-imgnav a.next {
-    background: url(../images/next.png) no-repeat right 45%;
+    background: url(../../images/connoisseur/next.png) no-repeat right 45%;
     height: 100%;
     width: 50px;
     top: 10px;
@@ -95,7 +95,7 @@
 }
 
 .pika-imgnav a.play {
-    background: url(../images/play.png) no-repeat 0% 50%;
+    background: url(../../images/connoisseur/play.png) no-repeat 0% 50%;
     height: 100px;
     width: 44px;
     top: 0;
@@ -105,7 +105,7 @@
 }
 
 .pika-imgnav a.pause {
-    background: url(../images/pause.png) no-repeat 0% 50%;
+    background: url(../../images/connoisseur/pause.png) no-repeat 0% 50%;
     height: 100px;
     width: 44px;
     top: 0;
@@ -165,7 +165,7 @@
 
 /* If using user thumbnails there's a pause well the new large image loads. This is the loader for that */
 .pika-loader {
-    background: url(../images/loading.gif) 3px 3px no-repeat #000;
+    background: url(../../images/connoisseur/loading.gif) 3px 3px no-repeat #000;
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
     width: 60px;
