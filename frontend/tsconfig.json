@@ -6,11 +6,12 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "sourceMap": true,
-        "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "removeComments": false,
+        "experimentalDecorators": true,
+        "lib": [ "es2015", "dom" ],
         "noImplicitAny": true,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "removeComments": false
     },
     "filesGlob": [
         "app/**/*.ts",
