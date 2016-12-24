@@ -1,19 +1,19 @@
 var gulp = require('gulp'),
-    tsc = require('gulp-typescript'),
-    sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
-    cssnano = require('gulp-cssnano'),
-    jshint = require('gulp-jshint'),
-    uglify = require('gulp-uglify'),
-    imagemin = require('gulp-imagemin'),
-    rename = require('gulp-rename'),
-    concat = require('gulp-concat'),
-    notify = require('gulp-notify'),
-    cache = require('gulp-cache'),
-    livereload = require('gulp-livereload'),
-    sourcemaps = require('gulp-sourcemaps'),
-    del = require('del'),
-    browserSync = require('browser-sync').create();
+  tsc = require('gulp-typescript'),
+  sass = require('gulp-sass'),
+  autoprefixer = require('gulp-autoprefixer'),
+  cssnano = require('gulp-cssnano'),
+  jshint = require('gulp-jshint'),
+  uglify = require('gulp-uglify'),
+  imagemin = require('gulp-imagemin'),
+  rename = require('gulp-rename'),
+  concat = require('gulp-concat'),
+  notify = require('gulp-notify'),
+  cache = require('gulp-cache'),
+  livereload = require('gulp-livereload'),
+  sourcemaps = require('gulp-sourcemaps'),
+  del = require('del'),
+  browserSync = require('browser-sync').create();
 
 var tsProject = tsc.createProject('tsconfig.json');
 
@@ -63,28 +63,28 @@ gulp.task('watch', function () {
   // gulp.watch(['./gulpfile.js', './*.json'], ['build']);
 });
 
-gulp.task('build-scripts', ['compile-ts','copy:assets:scripts'], function (done) {
+gulp.task('build-scripts', ['compile-ts', 'copy:assets:scripts'], function (done) {
   return gulp.src(paths.scripts_app).pipe(gulp.dest('build'))
 });
 
 gulp.task('compile-ts', function (done) {
   var tsResult = gulp
-      .src(paths.scripts)
-      .pipe(sourcemaps.init())
-      .pipe(tsc(tsProject));
+    .src(paths.scripts)
+    .pipe(sourcemaps.init())
+    .pipe(tsc(tsProject));
   return tsResult.js
-      .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest('build'));
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('build-styles', function () {
   return sass(paths.styles_sass, {style: 'expanded'})
-      .pipe(autoprefixer('last 2 version'))
-      .pipe(gulp.dest('build/styles/css'))
-      .pipe(rename({suffix: '.min'}))
-      .pipe(cssnano())
-      // .pipe(gulp.dest('build/assets/css'))
-      .pipe(notify({message: 'Styles task complete'}));
+    .pipe(autoprefixer('last 2 version'))
+    .pipe(gulp.dest('build/styles/css'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(cssnano())
+    // .pipe(gulp.dest('build/assets/css'))
+    .pipe(notify({message: 'Styles task complete'}));
 });
 
 /**
@@ -119,7 +119,7 @@ gulp.task('copy:assets:views', function () {
  */
 gulp.task('libs', function () {
   return gulp.src(paths.libs, {cwd: 'node_modules/**'}) /* Glob required here. */
-      .pipe(gulp.dest('build/lib'));
+    .pipe(gulp.dest('build/lib'));
 });
 
 gulp.task('inject', function () {
@@ -132,13 +132,13 @@ gulp.task('clean', function () {
 
 function browserSyncInit(baseDir, files) {
   browserSync.instance = browserSync.init(
-      files,
-      {
-        startPath: '/',
-        server: {
-          baseDir: baseDir
-        }
-      });
+    files,
+    {
+      startPath: '/',
+      server: {
+        baseDir: baseDir
+      }
+    });
 }
 
 // starts a development server
